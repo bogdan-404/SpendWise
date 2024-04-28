@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import AddExpense from "./pages/AddExpense";
 import EditExpense from "./pages/EditExpense";
 import Statistics from "./pages/Statistics";
+import Navbar from "./components/Navbar";
+
 
 function App() {
   return (

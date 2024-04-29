@@ -1,16 +1,12 @@
-import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, IconButton, Button } from "@mui/material";
+import React from "react";
+import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
-import DarkModeIcon from '@mui/icons-material/DarkMode'; // Icon for the dark mode switch
-import LightModeIcon from '@mui/icons-material/LightMode'; // Icon for the light mode switch
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import { useTheme } from '../ThemeContext';
 
 function Navbar() {
-    const [darkMode, setDarkMode] = useState(false);
-
-    const toggleTheme = () => {
-        setDarkMode(!darkMode);
-        // Here you can also implement the actual theme change logic
-    };
+    const { theme, toggleTheme } = useTheme();
 
     return (
         <AppBar position="static">
@@ -20,11 +16,11 @@ function Navbar() {
                         SpendWise
                     </Link>
                 </Typography>
-                <Button color="inherit" component={Link} to="/statistics">
+                <Link to="/statistics" style={{ textDecoration: 'none', color: 'inherit', marginLeft: 10 }}>
                     Statistics
-                </Button>
+                </Link>
                 <IconButton color="inherit" onClick={toggleTheme}>
-                    {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+                    {theme === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
                 </IconButton>
             </Toolbar>
         </AppBar>

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
-import { Pie, Bar } from 'react-chartjs-2';
+import { Pie, Bar, Line } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
     BarElement,
+    PointElement,
+    LineElement,
     Title,
     Tooltip,
     Legend,
@@ -16,6 +18,8 @@ ChartJS.register(
     CategoryScale,
     LinearScale,
     BarElement,
+    PointElement,
+    LineElement,
     Title,
     Tooltip,
     Legend,
@@ -41,45 +45,52 @@ const Statistics = () => {
         return acc;
     }, {});
 
+    const lineDataByCategory = {};
+    expenses.forEach(exp => {
+        const month = new Date(exp.date).getMonth();
+        if (!lineDataByCategory[exp.category]) {
+            lineDataByCategory[exp.category] = Array(12).fill(0);
+        }
+        lineDataByCategory[exp.category][month] += parseFloat(exp.amount);
+    });
+
     const pieData = {
         labels: Object.keys(categoryData),
         datasets: [{
-            label: 'Expenses by Category',
             data: Object.values(categoryData),
-            backgroundColor: [
-                '#FF6384',
-                '#36A2EB',
-                '#FFCE56',
-                '#E7E9ED',
-                '#71B37C',
-            ],
-            hoverBackgroundColor: [
-                '#FF6384',
-                '#36A2EB',
-                '#FFCE56',
-                '#E7E9ED',
-                '#71B37C',
-            ]
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#E7E9ED', '#71B37C'],
         }]
     };
 
     const barData = {
         labels: Array.from({ length: 12 }, (_, i) => new Date(0, i).toLocaleString('default', { month: 'long' })),
         datasets: [{
-            label: 'Expenses per Month',
             data: Array.from({ length: 12 }, (_, i) => monthlyData[i] || 0),
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
         }]
     };
 
+    const lineData = {
+        labels: Array.from({ length: 12 }, (_, i) => new Date(0, i).toLocaleString('default', { month: 'long' })),
+        datasets: Object.keys(lineDataByCategory).map(key => ({
+            label: key,
+            data: lineDataByCategory[key],
+            borderColor: `#${Math.floor(Math.random()*16777215).toString(16)}`, // Random color for each line
+            fill: false,
+        }))
+    };
+
     return (
-        <Box sx={{ p: 2 }}>
-            <h2>Expenses by Category</h2>
-            <Pie data={pieData} />
-            <h2>Monthly Expenses</h2>
-            <Bar data={barData} options={{ scales: { y: { beginAtZero: true } } }} />
+        <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+            <Box sx={{ width: '400px', height: '400px' }}>
+                <Pie data={pieData} />
+            </Box>
+            <Box sx={{ width: '600px', height: '300px' }}>
+                <Bar data={barData} options={{ scales: { y: { beginAtZero: true } } }} />
+            </Box>
+            <Box sx={{ width: '600px', height: '300px' }}>
+                <Line data={lineData} options={{ scales: { y: { beginAtZero: true } } }} />
+            </Box>
         </Box>
     );
 };

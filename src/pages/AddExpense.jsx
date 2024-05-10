@@ -20,13 +20,12 @@ const AddExpense = () => {
             name: expenseName,
             amount,
             category,
-            month,
+            date: new Date().toISOString()
         };
 
-        const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        expenses.push(newExpense);
-        localStorage.setItem('expenses', JSON.stringify(expenses));
-
+        const currentExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
+        const updatedExpenses = [...currentExpenses, newExpense];
+        localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
         navigate('/');
     };
 

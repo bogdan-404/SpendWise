@@ -1,25 +1,27 @@
+// src/pages/AddExpense.jsx
 import React, { useState } from 'react';
-import { Box, TextField, Button, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { Box, TextField, Button, MenuItem, Select, FormControl, InputLabel, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const AddExpense = () => {
     const [expenseName, setExpenseName] = useState('');
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('');
+    const [month, setMonth] = useState(new Date().getMonth() + 1);
 
     const navigate = useNavigate();
 
     const categories = ['Entertainment', 'Food', 'Market', 'Other'];
+    const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        // Create a new expense object
         const newExpense = {
             id: Date.now(),
             name: expenseName,
             amount,
             category,
+            month,
         };
 
         const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
@@ -29,44 +31,72 @@ const AddExpense = () => {
         navigate('/');
     };
 
+    const handleCancel = () => {
+        navigate('/');  // Go back to the home page
+    };
+
     return (
         <Box sx={{ mt: 8, mx: 'auto', width: '90%', maxWidth: 500 }}>
             <form onSubmit={handleSubmit}>
-                <TextField
-                    label="Expense Name"
-                    value={expenseName}
-                    onChange={(e) => setExpenseName(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                    required
-                />
-                <TextField
-                    label="Amount (MDL)"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    type="number"
-                    fullWidth
-                    margin="normal"
-                    required
-                />
-                <FormControl fullWidth margin="normal">
-                    <InputLabel>Category</InputLabel>
-                    <Select
-                        value={category}
-                        label="Category"
-                        onChange={(e) => setCategory(e.target.value)}
-                        required
-                    >
-                        {categories.map((option) => (
-                            <MenuItem key={option} value={option}>
-                                {option}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-                    Save Expense
-                </Button>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Expense Name"
+                            value={expenseName}
+                            onChange={(e) => setExpenseName(e.target.value)}
+                            fullWidth
+                            required
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            label="Amount (MDL)"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                            type="number"
+                            fullWidth
+                            required
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth>
+                            <InputLabel>Month</InputLabel>
+                            <Select
+                                value={month}
+                                label="Month"
+                                onChange={(e) => setMonth(e.target.value)}
+                            >
+                                {months.map((m) => (
+                                    <MenuItem key={m} value={m}>
+                                        {m}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FormControl fullWidth>
+                            <InputLabel>Category</InputLabel>
+                            <Select
+                                value={category}
+                                label="Category"
+                                onChange={(e) => setCategory(e.target.value)}
+                                required
+                            >
+                                {categories.map((option) => (
+                                    <MenuItem key={option} value={option}>
+                                        {option}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Button type="submit" variant="contained" fullWidth>
+                            Save Expense
+                        </Button>
+                    </Grid>
+                </Grid>
             </form>
         </Box>
     );

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Select, MenuItem, Card, CardContent, Typography, CardActions } from '@mui/material';
+import { Box, Button, Select, MenuItem, Card, CardContent, Typography, CardActions, IconButton } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Home = () => {
     const [expenses, setExpenses] = useState([]);
@@ -20,6 +22,16 @@ const Home = () => {
         const updatedExpenses = expenses.filter(expense => expense.id !== id);
         localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
         setExpenses(updatedExpenses);
+    };
+
+    // Function to get color based on category
+    const getCategoryColor = (category) => {
+        switch (category) {
+            case 'Entertainment': return '#ff4757';
+            case 'Food': return '#2ed573';
+            case 'Market': return '#1e90ff';
+            default: return '#ff6348'; // Other category
+        }
     };
 
     return (
@@ -43,15 +55,21 @@ const Home = () => {
             </Box>
 
             {expenses.filter(exp => new Date(exp.date).getMonth() + 1 === selectedMonth).map((expense) => (
-                <Card key={expense.id} sx={{ mb: 2 }}>
-                    <CardContent>
+                <Card key={expense.id} sx={{ mb: 2, backgroundColor: 'var(--card-background-color)', border: '1px solid var(--card-border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <span style={{ height: '15px', width: '15px', backgroundColor: getCategoryColor(expense.category), borderRadius: '50%', display: 'inline-block', marginRight: '10px' }}></span>
                         <Typography variant="h5">{expense.name}</Typography>
-                        <Typography variant="body1">{expense.amount} MDL</Typography>
-                        <Typography variant="body2">{expense.category}</Typography>
-                    </CardContent>
+                    </Box>
+                    <Typography variant="body1" sx={{ ml: 'auto' }}>
+                        {expense.amount} MDL
+                    </Typography>
                     <CardActions>
-                        <Button size="small" onClick={() => navigate(`/edit-expense/${expense.id}`)}>Edit</Button>
-                        <Button size="small" onClick={() => handleDelete(expense.id)}>Delete</Button>
+                        <IconButton onClick={() => navigate(`/edit-expense/${expense.id}`)} color="primary">
+                            <EditIcon />
+                        </IconButton>
+                        <IconButton onClick={() => handleDelete(expense.id)} color="error">
+                            <DeleteIcon />
+                        </IconButton>
                     </CardActions>
                 </Card>
             ))}

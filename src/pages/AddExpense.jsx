@@ -1,4 +1,3 @@
-// src/pages/AddExpense.jsx
 import React, { useState } from 'react';
 import { Box, TextField, Button, MenuItem, Select, FormControl, InputLabel, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -32,7 +31,7 @@ const AddExpense = () => {
     };
 
     const handleCancel = () => {
-        navigate('/');  // Go back to the home page
+        navigate('/');
     };
 
     return (
@@ -90,6 +89,11 @@ const AddExpense = () => {
                                 ))}
                             </Select>
                         </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Button variant="outlined" fullWidth onClick={handleCancel}>
+                            Cancel
+                        </Button>
                     </Grid>
                     <Grid item xs={6}>
                         <Button type="submit" variant="contained" fullWidth>

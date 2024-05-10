@@ -1,13 +1,19 @@
+/*body {*/
+/*  margin: 0;*/
+/*  font-family: 'Inter', sans-serif;*/
+/*  -webkit-font-smoothing: antialiased;*/
+/*  -moz-osx-font-smoothing: grayscale;*/
+/*}*/
+
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Sora', sans-serif;
+  color: #fff;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
+/*code {*/
+/*  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;*/
+/*}*/
 
 :root {
   --background-color-light: #fff;

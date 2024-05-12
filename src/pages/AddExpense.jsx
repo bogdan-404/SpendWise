@@ -54,15 +54,17 @@ const AddExpense = () => {
                             type="number"
                             fullWidth
                             required
+
                         />
                     </Grid>
-                    <Grid item xs={6}>
-                        <FormControl fullWidth>
-                            <InputLabel>Month</InputLabel>
+                    <Grid item xs={6} >
+                        <FormControl fullWidth >
+                            <InputLabel sx={{ color: 'var(--text-color)'}}>Month</InputLabel>
                             <Select
                                 value={month}
                                 label="Month"
                                 onChange={(e) => setMonth(e.target.value)}
+                                sx={{ color: 'var(--text-color)'}}
                             >
                                 {months.map((m) => (
                                     <MenuItem key={m} value={m}>
@@ -74,12 +76,13 @@ const AddExpense = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <FormControl fullWidth>
-                            <InputLabel>Category</InputLabel>
+                            <InputLabel sx={{ color: 'var(--text-color)'}}>Category</InputLabel>
                             <Select
                                 value={category}
                                 label="Category"
                                 onChange={(e) => setCategory(e.target.value)}
                                 required
+                                sx={{ color: 'var(--text-color)'}}
                             >
                                 {categories.map((option) => (
                                     <MenuItem key={option} value={option}>

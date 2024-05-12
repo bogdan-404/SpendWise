@@ -1,27 +1,23 @@
-/* src/index.css */
 body {
   margin: 0;
-  font-family: 'Sora', sans-serif; /* Using Sora throughout the application */
-  color: var(--text-color); /* Default text color */
+  font-family: 'Sora', sans-serif;
 }
 
 input, button, select, textarea {
-  color: inherit; /* Inherit color from body */
-  border-color: inherit; /* Inherit border color from body */
+  color: inherit;
+  border-color: inherit;
 }
 
 [data-theme="dark"] {
-  --background-color: #192936; /* Dark theme background color */
-  --text-color: #fff; /* White text for dark theme */
-  --form-text-color: #fff; /* White form text for dark theme */
-  --form-border-color: #fff; /* White form borders for dark theme */
-  --card-background-color: #000; /* Black card background for dark theme */
-  --card-border-color: #fff; /* White card borders for dark theme */
+  --background-color: #192936;
+  --text-color: #fff;
+  --card-background-color: #000;
+  --card-border-color: #fff;
 }
 
 [data-theme="light"] {
-  --background-color: rgb(237, 240, 242); /* Light theme background color */
-  --text-color: #333; /* Darker text for light theme */
+  --background-color: rgb(237, 240, 242);
+  --text-color: #333;
   --card-background-color: #fff;
   --card-border-color: #ccc;
 }
@@ -31,13 +27,44 @@ body {
   color: var(--text-color);
 }
 
-input, button, select, textarea {
-  color: var(--form-text-color);
-  border-color: var(--form-border-color);
-}
-
 .card {
   background-color: var(--card-background-color);
   border: 1px solid var(--card-border-color);
   color: var(--text-color);
+}
+
+.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: var(--text-color) !important;
+}
+
+.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--text-color) !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--text-color) !important;
+}
+
+.MuiOutlinedInput-root::placeholder {
+  color: var(--text-color) !important;
+}
+
+.MuiInputLabel-root.Mui-focused {
+  color: var(--text-color) !important;
+}
+
+.MuiInputLabel-root {
+  color: var(--text-color) !important;
+}
+
+.MuiSelect-select {
+  color: var(--text-color) !important;
+}
+
+.MuiOutlinedInput-root {
+  color: var(--text-color) !important;
+}
+
+.MuiOutlinedInput-input {
+  color: var(--text-color) !important;
 }

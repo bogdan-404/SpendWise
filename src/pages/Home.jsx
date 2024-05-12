@@ -24,13 +24,12 @@ const Home = () => {
         setExpenses(updatedExpenses);
     };
 
-    // Function to get color based on category
     const getCategoryColor = (category) => {
         switch (category) {
             case 'Entertainment': return '#ff4757';
             case 'Food': return '#2ed573';
             case 'Market': return '#1e90ff';
-            default: return '#ff6348'; // Other category
+            default: return '#ff6348';
         }
     };
 
@@ -49,7 +48,7 @@ const Home = () => {
                         </MenuItem>
                     ))}
                 </Select>
-                <Button variant="contained" component={Link} to="/add-expense">
+                <Button variant="contained" sx={{fontWeight: 'bold'}} component={Link} to="/add-expense">
                     Add Expense
                 </Button>
             </Box>
@@ -58,9 +57,9 @@ const Home = () => {
                 <Card key={expense.id} sx={{ mb: 2, backgroundColor: 'var(--card-background-color)', border: '1px solid var(--card-border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <span style={{ height: '15px', width: '15px', backgroundColor: getCategoryColor(expense.category), borderRadius: '50%', display: 'inline-block', marginRight: '10px' }}></span>
-                        <Typography variant="h5">{expense.name}</Typography>
+                        <Typography variant="h5" sx={{ color: 'var(--text-color)'}}>{expense.name}</Typography>
                     </Box>
-                    <Typography variant="body1" sx={{ ml: 'auto' }}>
+                    <Typography variant="body1" sx={{ ml: 'auto' , color: 'var(--text-color)'}}>
                         {expense.amount} MDL
                     </Typography>
                     <CardActions>

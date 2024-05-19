@@ -8,23 +8,39 @@ const EditExpense = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        const existingExpense = expenses.find(exp => exp.id === parseInt(id));
-        if (existingExpense) {
-            setExpense(existingExpense);
-        }
+        const fetchExpense = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/expenses/${id}`);
+                if (!response.ok) throw new Error('Failed to fetch expense');
+                const data = await response.json();
+                setExpense(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchExpense();
     }, [id]);
 
     const handleInputChange = (e, field) => {
         setExpense({ ...expense, [field]: e.target.value });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        const updatedExpenses = expenses.map(exp => exp.id === parseInt(id) ? expense : exp);
-        localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
-        navigate('/');
+        try {
+            const response = await fetch(`http://localhost:3000/expenses/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(expense)
+            });
+            if (!response.ok) throw new Error('Failed to update the expense');
+            navigate('/');
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     return (

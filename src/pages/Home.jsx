@@ -10,18 +10,34 @@ const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        setExpenses(storedExpenses);
+        const fetchExpenses = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/expenses');
+                if (!response.ok) throw new Error('Failed to fetch expenses');
+                const data = await response.json();
+                setExpenses(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchExpenses();
     }, []);
 
     const handleMonthChange = (event) => {
         setSelectedMonth(event.target.value);
     };
 
-    const handleDelete = (id) => {
-        const updatedExpenses = expenses.filter(expense => expense.id !== id);
-        localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
-        setExpenses(updatedExpenses);
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:3000/expenses/${id}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) throw new Error('Failed to delete the expense');
+            setExpenses(expenses.filter(expense => expense.id !== id));
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     const getCategoryColor = (category) => {
@@ -48,7 +64,7 @@ const Home = () => {
                         </MenuItem>
                     ))}
                 </Select>
-                <Button variant="contained" sx={{fontWeight: 'bold'}} component={Link} to="/add-expense">
+                <Button variant="contained" sx={{ fontWeight: 'bold' }} component={Link} to="/add-expense">
                     Add Expense
                 </Button>
             </Box>
@@ -57,9 +73,9 @@ const Home = () => {
                 <Card key={expense.id} sx={{ mb: 2, backgroundColor: 'var(--card-background-color)', border: '1px solid var(--card-border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <span style={{ height: '15px', width: '15px', backgroundColor: getCategoryColor(expense.category), borderRadius: '50%', display: 'inline-block', marginRight: '10px' }}></span>
-                        <Typography variant="h5" sx={{ color: 'var(--text-color)'}}>{expense.name}</Typography>
+                        <Typography variant="h5" sx={{ color: 'var(--text-color)' }}>{expense.name}</Typography>
                     </Box>
-                    <Typography variant="body1" sx={{ ml: 'auto' , color: 'var(--text-color)'}}>
+                    <Typography variant="body1" sx={{ ml: 'auto', color: 'var(--text-color)' }}>
                         {expense.amount} MDL
                     </Typography>
                     <CardActions>

@@ -13,20 +13,28 @@ const AddExpense = () => {
     const categories = ['Entertainment', 'Food', 'Market', 'Other'];
     const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const newExpense = {
-            id: Date.now(),
             name: expenseName,
             amount,
             category,
-            date: new Date().toISOString()
+            date: new Date(new Date().getFullYear(), month - 1).toISOString()
         };
 
-        const currentExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        const updatedExpenses = [...currentExpenses, newExpense];
-        localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
-        navigate('/');
+        try {
+            const response = await fetch('http://localhost:3000/expenses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newExpense)
+            });
+            if (!response.ok) throw new Error('Failed to save the expense');
+            navigate('/');
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     const handleCancel = () => {
@@ -54,40 +62,35 @@ const AddExpense = () => {
                             type="number"
                             fullWidth
                             required
-
                         />
                     </Grid>
-                    <Grid item xs={6} >
-                        <FormControl fullWidth >
-                            <InputLabel sx={{ color: 'var(--text-color)'}}>Month</InputLabel>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth>
+                            <InputLabel>Month</InputLabel>
                             <Select
                                 value={month}
                                 label="Month"
                                 onChange={(e) => setMonth(e.target.value)}
-                                sx={{ color: 'var(--text-color)'}}
+                                sx={{ color: 'var(--text-color)' }}
                             >
-                                {months.map((m) => (
-                                    <MenuItem key={m} value={m}>
-                                        {m}
-                                    </MenuItem>
+                                {months.map(m => (
+                                    <MenuItem key={m} value={m}>{m}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                     </Grid>
                     <Grid item xs={12}>
                         <FormControl fullWidth>
-                            <InputLabel sx={{ color: 'var(--text-color)'}}>Category</InputLabel>
+                            <InputLabel>Category</InputLabel>
                             <Select
                                 value={category}
                                 label="Category"
                                 onChange={(e) => setCategory(e.target.value)}
                                 required
-                                sx={{ color: 'var(--text-color)'}}
+                                sx={{ color: 'var(--text-color)' }}
                             >
-                                {categories.map((option) => (
-                                    <MenuItem key={option} value={option}>
-                                        {option}
-                                    </MenuItem>
+                                {categories.map(option => (
+                                    <MenuItem key={option} value={option}>{option}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>

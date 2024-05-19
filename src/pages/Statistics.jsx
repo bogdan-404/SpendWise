@@ -30,8 +30,18 @@ const Statistics = () => {
     const [expenses, setExpenses] = useState([]);
 
     useEffect(() => {
-        const storedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        setExpenses(storedExpenses);
+        const fetchExpenses = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/expenses');
+                if (!response.ok) throw new Error('Failed to fetch expenses');
+                const data = await response.json();
+                setExpenses(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchExpenses();
     }, []);
 
     const categoryData = expenses.reduce((acc, cur) => {
